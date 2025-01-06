@@ -1,4 +1,5 @@
 import java.util.*;
+
 class Solution {
     public int solution(int N, int number) {
 
@@ -16,6 +17,7 @@ class Solution {
         // 1~8 순회 => number가 있으면 해당 수를, 없으면 -1을 return
         if(N == number) return 1;
 
+        int repeat = N;
         dp.get(1).add(N);
         for(int i = 2; i <= 8; i++){
 
@@ -31,9 +33,8 @@ class Solution {
                     }
                 }
             }
-            String str = String.valueOf(N).repeat(i);
-            dp.get(i).add(Integer.parseInt(str));
-
+            repeat = repeat*10 + N;
+            dp.get(i).add(repeat);
             if(dp.get(i).contains(number)) return i;
         }
         return -1;
