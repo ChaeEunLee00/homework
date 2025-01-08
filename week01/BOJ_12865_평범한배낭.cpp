@@ -7,7 +7,7 @@ using namespace std;
 int n, k;
 pair<int, int> bag[101];
 
-int dp[101][100001]; // dp[i][k] i번째 물건을 넣었을 때, 무게가 k인 경우의 최대 가치
+int dp[101][100001]; // dp[i][k] i번째 물건까지 확인했을 때, 무게가 k인 경우의 최대 가치
 
 int main(){
 
