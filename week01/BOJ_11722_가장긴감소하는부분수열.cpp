@@ -19,7 +19,6 @@ int main(){
             if(arr[j] > arr[i]){
                 dp[i] = max(dp[i], dp[j]+1);
             }
-            //dp[i] = max(dp[i], dp[j]);
         }
     }
     
