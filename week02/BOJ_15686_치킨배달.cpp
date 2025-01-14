@@ -6,7 +6,7 @@ using namespace std;
 #define Y second
 
 int n, m;
-int board[51][14];
+int board[51][51];
 vector<pii> home;
 vector<pii> chick;
 int dist = INT_MAX;
