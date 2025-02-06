@@ -5,3 +5,6 @@
 
 # SFT 출퇴근길
 - 참고: https://velog.io/@dndud1024/%EC%86%8C%ED%94%84%ED%8B%B0%EC%96%B4-%EC%B6%9C%ED%87%B4%EA%B7%BC%EA%B8%B8-C
+
+# BOJ 출퇴근길
+- 전형적인 DFS 문제
