@@ -6,7 +6,7 @@ public class Main {
     public static int C;
     public static int maxLength;
     public static char[][] board;
-    public static boolean[][] visited;
+    public static boolean[] abcVisited = new boolean[26];
 
     public static int[] dY = {1, -1, 0, 0};
     public static int[] dX = {0, 0, 1, -1};
@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         R = Integer.parseInt(st.nextToken());
         C = Integer.parseInt(st.nextToken());
 
@@ -25,42 +26,31 @@ public class Main {
             }
         }
 
-        visited = new boolean[R][C];
-        visited[0][0] = true;
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(board[0][0]);
-
-        dfs(0, 0, sb);
+        // 알파벳 별 방문여부 체크를 통한 메모리,시간 개선
+        abcVisited[board[0][0]-'A'] = true;
+        dfs(0, 0, 1);
 
         System.out.println(maxLength);
     }
 
-    public static void dfs(int y, int x, StringBuilder sb) {
+    public static void dfs(int y, int x, int length) {
         for (int d = 0; d < 4; d++) {
             int nextY = y + dY[d];
             int nextX = x + dX[d];
 
-            if (!isValid(nextY, nextX) || visited[nextY][nextX] || isContained(sb, board[nextY][nextX])) {
-                maxLength = Math.max(maxLength, sb.length());
+            if (!isValid(nextY, nextX) || abcVisited[board[nextY][nextX]-'A']){
+                maxLength = Math.max(maxLength, length);
                 continue;
             }
 
-            visited[nextY][nextX] = true;
-            sb.append(board[nextY][nextX]);
-            dfs(nextY, nextX, sb);
-            visited[nextY][nextX] = false;
-            sb.deleteCharAt(sb.length() - 1);
+            abcVisited[board[nextY][nextX]-'A'] = true;
+            dfs(nextY, nextX, length+1);
+            abcVisited[board[nextY][nextX]-'A'] = false;
         }
     }
 
     public static boolean isValid(int y, int x) {
         if (y < 0 || x < 0 || y >= R || x >= C) return false;
-        return true;
-    }
-
-    public static boolean isContained(StringBuilder sb, char c) {
-        if (sb.indexOf(c + "") == -1) return false;
         return true;
     }
 }
