@@ -2,54 +2,58 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int R,C;
-    static String answer;
-    static char[][] map;
-    static Queue<Integer[]> fires = new LinkedList<>();
-
     static int[] dY = {1, -1, 0, 0};
     static int[] dX = {0, 0, 1, -1};
-
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        R = Integer.parseInt(st.nextToken());
-        C = Integer.parseInt(st.nextToken());
-        map = new char[R][C];
+        int R = Integer.parseInt(st.nextToken());
+        int C = Integer.parseInt(st.nextToken());
 
-        Integer[] jStart = new Integer[2];
+        char[][] map = new char[R][C];
+        Queue<int[]> q = new ArrayDeque<>();
+        Queue<int[]> fires = new ArrayDeque<>();
         for(int r = 0; r < R; r++){
             String line = br.readLine();
             for(int c = 0; c < C; c++){
                 map[r][c] = line.charAt(c);
+
                 if(map[r][c] == 'J'){
-                    jStart[0] = r;
-                    jStart[1] = c;
-                } else if(map[r][c] == 'F'){
-                    fires.offer(new Integer[]{r, c});
+                    q.offer(new int[]{r, c});
+                }
+                else if(map[r][c] == 'F'){
+                    fires.offer(new int[]{r, c});
                 }
             }
         }
 
-        bfs(jStart);
-        System.out.println(answer);
-    }
-
-    static void bfs(Integer[] jStart){
-
-        Queue<Integer[]> q = new LinkedList<>();
-        q.offer(jStart);
-
         int time = 1;
         while(!q.isEmpty()){
             // 불 확산
-            fire();
+            int fireSize = fires.size();
+            while(fireSize != 0){
+                int[] currentFire = fires.poll();
+
+                // next 담기
+                // 밖이거나 벽이거나 불이면 확산 x
+                for(int d = 0; d < 4; d++){
+                    int nextY = currentFire[0] + dY[d];
+                    int nextX = currentFire[1] + dX[d];
+
+                    if(nextY < 0 || nextX < 0 || nextY >= R || nextX >= C ||
+                            map[nextY][nextX] == '#' || map[nextY][nextX] == 'F') continue;
+
+                    fires.offer(new int[]{nextY, nextX});
+                    map[nextY][nextX] = 'F';
+                }
+                fireSize--;
+            }
 
             // q의 size만큼 loop
             int size = q.size();
             while(size != 0){
-                Integer[] current = q.poll();
+                int[] current = q.poll();
 
                 // next 담기
                 // 밖이면 탈출(break)
@@ -58,13 +62,13 @@ public class Main {
                     int nextY = current[0] + dY[d];
                     int nextX = current[1] + dX[d];
 
-                    if(isOutside(nextY,nextX)){
-                        answer = time+"";
+                    if(nextY < 0 || nextX < 0 || nextY >= R || nextX >= C){
+                        System.out.println(time);
                         return;
                     }
 
                     if(map[nextY][nextX] == '#' || map[nextY][nextX] == 'F' || map[nextY][nextX] == 'J') continue;
-                    q.offer(new Integer[]{nextY, nextX});
+                    q.offer(new int[]{nextY, nextX});
                     map[nextY][nextX] = 'J';
                 }
                 size--;
@@ -73,31 +77,6 @@ public class Main {
             time++;
         }
 
-        answer = "IMPOSSIBLE";
-    }
-
-    static void fire(){
-        int size = fires.size();
-        while(size != 0){
-            Integer[] currentFire = fires.poll();
-
-            // next 담기
-            // 밖이거나 벽이거나 불이면 확산 x
-            for(int d = 0; d < 4; d++){
-                int nextY = currentFire[0] + dY[d];
-                int nextX = currentFire[1] + dX[d];
-
-                if(isOutside(nextY,nextX) || map[nextY][nextX] == '#' || map[nextY][nextX] == 'F') continue;
-
-                fires.offer(new Integer[]{nextY, nextX});
-                map[nextY][nextX] = 'F';
-            }
-            size--;
-        }
-    }
-
-    static boolean isOutside(int y, int x){
-        if(y < 0 || x < 0 || y >= R || x >= C) return true;
-        return false;
+        System.out.println("IMPOSSIBLE");
     }
 }
