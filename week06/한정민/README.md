@@ -31,3 +31,7 @@
 
 - `rank.append([sorted(universe[i]).index(j) for j in universe[i]])` 로 rank를 계산하면 시간 초과 발생 <br>
     => 해결) `dict` 를 사용하여 미리 순위를 계산
+
+### 백준 2467 용액
+
+- 값이 아닌 인덱스(left, right)를 증가, 감소시켜야 함
