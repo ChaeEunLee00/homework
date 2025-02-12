@@ -26,3 +26,8 @@
 - total = mid 시간 동안 심사한 총 인원
     - total >= n : 시간 충분 -> `right = mid - 1`
     - total < n : 시간 부족 -> `left = mid + 1`
+
+### 백준 18869 멀티버스 Ⅱ
+
+- `rank.append([sorted(universe[i]).index(j) for j in universe[i]])` 로 rank를 계산하면 시간 초과 발생 <br>
+    => 해결) `dict` 를 사용하여 미리 순위를 계산
