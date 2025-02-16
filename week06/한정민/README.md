@@ -48,3 +48,9 @@
     - 주의) lis의 원소들이 '가장 긴 증가하는 부분 수열'을 만족하지는 않지만, 길이 값 자체는 '가장 긴 증가하는 부분 수열'을 만족함 <br>
     i) find_place(target) : lis의 왼쪽부터 탐색하여 target보다 크거나 같은 원소를 처음으로 만났을 때의 인덱스를 반환 <br>
     ii) bisect_left : find_place 대체 가능
+
+### 백준 3020 개똥벌레
+
+- binary_search(data, target) : data 리스트에 대해 target보다 큰 수의 개수를 찾는 함수
+    - binary_search(data_bottom, h - 1) : h보다 높은 석순의 개수
+    - binary_search(data_top, H - h) : h보다 낮은 종유석의 개수
