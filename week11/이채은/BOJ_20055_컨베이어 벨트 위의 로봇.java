@@ -2,70 +2,51 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static int N;
-    public static int K;
-
-    public static class Belt{
-        int durability;
-        boolean robot;
-
-        public Belt(int durability){
-            this.durability = durability;
-            this.robot = false;
-        }
-    }
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+
+        int[] conveyor = new int[N*2];
+        boolean[] robot = new boolean[N];
 
         st = new StringTokenizer(br.readLine());
-        LinkedList<Belt> conveyor = new LinkedList<>();
         for(int i = 0; i < 2*N; i++){
-            conveyor.add(i,new Belt(Integer.parseInt(st.nextToken())));
+            conveyor[i] = Integer.parseInt(st.nextToken());
         }
 
         int step = 0;
         while(K > 0){
             step++;
             // 1. 컨베이어 한칸 회전
-            moveConveyor(conveyor);
+            int temp = conveyor[2*N-1];
+            for(int i = N*2-1; i >= 1; i--){
+                conveyor[i] = conveyor[i-1];
+                if(i < N-1){
+                    robot[i] = robot[i-1];
+                }
+            }
+            conveyor[0] = temp;
+            robot[0] = false;
 
             // 2. 로봇 이동할 수 있는 경우에 이동 + 내구도 감소
-            moveRobot(conveyor);
+            for(int i = N-1; i >= 1; i--){
+                if(robot[i-1] && !robot[i] && conveyor[i] > 0){
+                    robot[i-1] = false;
+                    robot[i] = true;
+                    if(--conveyor[i] == 0) K--;
+                }
+            }
+            robot[N-1] = false;
 
             // 3. 로봇 올릴 수 있으면 올림
-            addRobot(conveyor);
+            if(!robot[0] && conveyor[0] > 0){
+                robot[0] = true;
+                if(--conveyor[0] == 0) K--;
+            }
         }
 
         System.out.println(step);
-    }
-
-    public static void moveConveyor(LinkedList<Belt> conveyor){
-        conveyor.addFirst(conveyor.removeLast());
-        conveyor.get(N-1).robot = false;
-    }
-
-    public static void moveRobot(LinkedList<Belt> conveyor){
-        for(int i = N-2; i >= 0; i--){
-            Belt nextBelt = conveyor.get(i+1);
-            Belt curBelt = conveyor.get(i);
-            if(curBelt.robot && !nextBelt.robot && nextBelt.durability > 0){
-                curBelt.robot = false;
-                nextBelt.robot = true;
-                if(--nextBelt.durability == 0) K--;
-            }
-        }
-        conveyor.get(N-1).robot = false;
-    }
-
-    public static void addRobot(LinkedList<Belt> conveyor){
-        Belt inBelt = conveyor.get(0);
-        if(!inBelt.robot && inBelt.durability > 0) {
-            inBelt.robot = true;
-            if(--inBelt.durability == 0) K--;
-        }
     }
 }
