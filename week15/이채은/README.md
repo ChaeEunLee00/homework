@@ -41,7 +41,13 @@
     -  `dp[마지막 물건][j]` 중 최소값 
     - 최솟값이 n 이상이라면 -1 반환
 
-### 
+### PGS 카펫
+- 완전탐색
+  - 총 격자의 수 `total = brown + yellow`를 구해 `total = w * h` 를 만족하는 `w`,`h` 완전탐색
+  - 각 `w`,`h`에 대한 `calBrown`,`calYellow`를 계산하여 실제 `brown`,`yellow`와 같으면 해당 `w`,`h` 반환 
+    - `calBrown = (w-1)*2 + (h-1)*2`
+    - `calYellow = (w-2) * (h-2)`
+      
 
 ### 
 
