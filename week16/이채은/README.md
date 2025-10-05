@@ -50,4 +50,12 @@
     - 전부 더해 해당 조합의 승리 수 산출
   - 최댓값이면 정답 갱신
 
-### 
+### BOJ 13302 리조트
+- 다이나믹 프로그래밍 (dp)
+  - `dp[i][j]`: i 번째 날 쿠폰 j장 가지고 있을 때 최소비용
+  - 점화식
+      - 불가능한 날: `dp[i][j] = Math.min(dp[i][j], dp[i-1][j])`
+      - 쿠폰 3장 사용: `dp[i][j-3] = Math.min(dp[i][j-3], dp[i-1][j])`
+      - 1일 이용권: `dp[i][j] = Math.min(dp[i][j], dp[i-1][j]+ONE_DAY)`
+      - 3일 이용권: `dp[i+k][j+1] = Math.min(dp[i+k][j+1], dp[i-1][j]+THREE_DAY)`, `k = 0~2`
+      - 5일 이용권: `dp[i+k][j+2] = Math.min(dp[i+k][j+2], dp[i-1][j]+FIVE_DAY)`, `k = 0~4`
